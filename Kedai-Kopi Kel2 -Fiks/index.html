@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alvarizi Bakerys</title>
+
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Feather Icons  -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <!-- My style -->
+
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Alpine JS -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <!-- App  -->
+    <script src="src/app.js" async></script>
+  </head>
+  <body>
+    <!-- Navbar Start -->
+    <nav class="navbar" x-data>
+      <a href="#" class="navbar-logo">alvarizi<span>bakerys</span>.</a>
+
+      <div class="navbar-nav">
+        <a href="#home">Home</a>
+        <a href="#about">Tentang Kami</a>
+        <a href="#products">Produk</a>
+        <a href="#contact">Contact Us</a>
+      </div>
+
+      <div class="navbar-extra" x-data>
+        <a href="#" id="search-button"><i data-feather="search"></i></a>
+        <a href="#" id="shopping-cart-button">
+          <i data-feather="shopping-cart"></i>
+          <span class="quantity-badge" x-show="$store.cart.quantity" x-text="$store.cart.quantity"></span>
+        </a>
+        <a href="#" id="hamburger-menu"><i data-feather="menu"></i></a>
+      </div>
+
+      <!-- Search Form Start  -->
+      <div class="search-form">
+        <input type="search" id="search-box" placeholder="Search Here" />
+        <label for="search-box"><i data-feather="search"></i></label>
+      </div>
+      <!-- Search Form End  -->
+
+      <!-- Shopping Cart Start -->
+      <div class="shopping-cart">
+        <template x-for="(item, index) in $store.cart.items" x-keys="index">
+          <div class="cart-item">
+            <img :src="`img/products/${item.img}`" :alt="item.name">
+            <div class="item-detail">
+              <h3 x-text="item.name"></h3>
+              <div class="item-price">
+                <span x-text="rupiah(item.price)"></span> &times;
+                <button id="remove" @click="$store.cart.remove(item.id)">&minus;</button>
+                <span x-text="item.quantity"></span>
+                <button id="add" @click="$store.cart.add(item)">&plus;</button> &equals;
+                <span x-text="rupiah(item.total)"></span>
+              </div>
+            </div>
+          </div>
+        </template>
+        <h4 x-show="!$store.cart.items.length"> Cart Is Empty</h4>
+        <h4 x-show="$store.cart.items.length">Total: <span x-text="rupiah($store.cart.total)"></span></h4> 
+    
+        <div class="form-container"x-show="$store.cart.items.length">
+          <form action="" id="checkoutForm">
+            <input type="hidden" name="items" x-model="JSON.stringify($store.cart.items)">
+            <input type="hidden" name="total" x-model="$store.cart.total">
+            <h3>Customer Detail</h3>
+
+            <label for="name">
+              <span>Name</span>
+              <input type="text" name="name" id="name">
+            </label>
+
+            <label for="email">
+              <span>Email</span>
+              <input type="text" name="email" id="email">
+            </label>
+
+            <label for="alamat">
+              <span>Alamat</span>
+              <input type="text" placeholder="Pick up : -" name="alamat" id="alamat">
+            </label>
+
+              <label for="phone">
+                <span>Phone</span>
+                <input type="number" name="phone" id="phone" autocomplete="off">
+              </label>
+
+              <button class="checkout-button disabled" type="submit" id="checkout-button" value="checkout">Checkout</button>
+            </label>
+          </form>
+        </div>
+      </div>
+      <!-- Shopping Cart end -->
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Herro Section Start -->
+    <section class="hero" id="home">
+      <main class="content">
+        <h1>Kami menjual <span>Cupcake & Birthday Cake</span></h1>
+      </main>
+    </section>
+    <!-- Herro Section End -->
+
+    <!-- About Section Start -->
+    <section id="about" class="about">
+      <h2><span>Tentang</span> Kami</h2>
+
+      <div class="row">
+        <div class="about-img">
+          <img src="img/aboutuskue.jpg" alt="Tentang Kami" />
+        </div>
+        <div class="content">
+          <h3>Kenapa Harus Alvarizi Bakery?</h3>
+          <p>
+            Alvarizi Bakery adalah sebuah destinasi kuliner yang memikat hati di tengah kota. Dikenal karena keahlian mereka dalam membuat berbagai kue lezat dan unik, Alvarizi Bakery menyajikan pengalaman yang tak terlupakan bagi para pengunjungnya. Setiap gigitan mempersembahkan rasa autentik dari resep warisan keluarga. Dari kue-kue klasik hingga kreasi modern yang inovatif, setiap produk diciptakan dengan teliti dan cinta. Kelezatan dan kualitas menjadi ciri khas utama dari setiap produk yang dihasilkan. Suasana hangat dan ramah di toko menjadikan pelanggan merasa seperti di rumah sendiri. Alvarizi Bakery adalah tempat yang sempurna untuk menemukan kue-kue spesial untuk setiap momen istimewa.
+          </p>
+          <p>
+            Kue kami dibuat dengan proses yang baik dan dilakukan oleh seorang yang telah berpengalaman dalam menciptakan kue yang lezat.
+          </p>
+        </div>
+      </div>
+    </section>
+    <!-- About Section End -->
+
+    <!-- Product Section start -->
+    <section id="products" class="products" x-data="products">
+      <h2><span>Produk</span> Kami</h2>
+      <p>
+       Berikut adalah Produk kami dengan
+        <span>kualitas premium terbaik.</span>
+      </p>
+
+      <div class="row">
+        <template x-for="(item, index) in items" x-key="index">
+          <div class="products-card">
+            <div class="products-icons">
+              <a href="#" id="add" @click.prevent="$store.cart.add(item)">
+                <svg
+                width="24"
+                height="24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+              <use href="img/feather-sprite.svg#shopping-cart" />
+              </svg>
+              </a>
+              <!-- <a href="#">
+                <svg
+                width="24"
+                height="24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              > -->
+                <!-- <use href="img/feather-sprite.svg#eye" /> -->
+              </svg>
+              </a>
+            </div>
+            <div class="products-image">
+              <img :src="`img/products/${item.img}`" :alt="item.name" />
+            </div>
+            <div class="products-content">
+              <h3 x-text="item.name"></h3>
+              <div class="products-stars">
+                <svg
+                width="24"
+                height="24"
+                fill="currentColor"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+              <use href="img/feather-sprite.svg#star" />
+              </svg>
+              <svg
+                width="24"
+                height="24"
+                fill="currentColor"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+              <use href="img/feather-sprite.svg#star" />
+              </svg>
+              <svg
+                width="24"
+                height="24"
+                fill="currentColor"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+              <use href="img/feather-sprite.svg#star" />
+              </svg>
+              <svg
+                width="24"
+                height="24"
+                fill="currentColor"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+              <use href="img/feather-sprite.svg#star" />
+              </svg>
+              <svg
+                width="24"
+                height="24"
+                fill="currentColor"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+              <use href="img/feather-sprite.svg#star" />
+              </svg>
+              </div>
+              <div class="product-price"><span x-text="item.price"></span></div>
+            </div>
+          </div>
+        </template>
+      </div>
+    </section>
+    <!-- Product Section end -->
+
+    <!-- Contact Section Start -->
+    <section id="contact" class="contact">
+      <h2><span>Kontak</span> Kami</h2>
+      <p>
+        Silahkan kontak kami apabila ada kesalahan pelayanan kami dan komentar
+        untuk kedai kami
+      </p>
+
+      <div class="row">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.0514729311144!2d106.82019947418475!3d-6.515169493477253!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c1634a8d9b7b%3A0x62bf3ee496566303!2sPerumahan%20Adiwira%20Persada!5e0!3m2!1sid!2sid!4v1704078037375!5m2!1sid!2sid"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          class="map"
+        ></iframe>
+
+        <form action="">
+          <div class="input-group">
+            <i data-feather="user"></i>
+            <input type="text" placeholder="nama" />
+          </div>
+          <div class="input-group">
+            <i data-feather="mail"></i>
+            <input type="text" placeholder="email" />
+          </div>
+          <div class="input-group">
+            <i data-feather="phone"></i>
+            <input type="text" placeholder="nomor hp" />
+          </div>
+          <button type="submit" class="btn" a href="http://wa.me/62895383271397?text=" >Kirim Pesan Pada Kami</button>
+        </form>
+      </div>
+    </section>
+    <!-- Contact Section End -->
+
+    <!-- Footer -->
+    <footer>
+      <div class="social">
+        <a href="#"><i data-feather="instagram"></i></a>
+        <a href="#"><i data-feather="twitter"></i></a>
+        <a href="#"><i data-feather="facebook"></i></a>
+      </div>
+
+      <div class="links">
+        <a href="#home">Home</a>
+        <a href="#about">Tentang Kami</a>
+        <a href="#menu">Menu</a>
+        <a href="#contact">Kontak</a>
+      </div>
+
+      <div class="credit">
+        <p>Created by <a href="">Asma Nabila</a>| &copy; 2023</p>
+      </div>
+    </footer>
+    <!-- Footer End -->
+
+    <!-- Modal Box item Start -->
+    <div class="modal" id="item-detail-modal">
+      <div class="modal-container">
+        <a href="#" class="close-icon"><i data-feather="x"></i></a>
+        <div class="modal-content">
+          <img src="img/products/produk1.jpg" alt="Product 1" />
+          <div class="product-content">
+            <h3>Product 1</h3>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Consequatur, officia animi, sit laboriosam veniam maiores corrupti
+              adipisci, ipsam laudantium illum reprehenderit rem voluptatibus
+              unde! At est quo facilis. Temporibus, voluptatum.
+            </p>
+            <div class="products-stars">
+              <i data-feather="star" class="star-full"></i>
+              <i data-feather="star" class="star-full"></i>
+              <i data-feather="star" class="star-full"></i>
+              <i data-feather="star" class="star-full"></i>
+              <i data-feather="star" class="star-full"></i>
+            </div>
+            <div class="product-price">IDR 25K <span> IDR 70K </span></div>
+            <a href="#"
+              ><i data-feather="shopping-cart"></i> <span>Add to Cart</span></a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal Box Item End -->
+
+    <!-- feather icons -->
+    <script>
+      feather.replace();
+    </script>
+
+    <!-- My JavaScript -->
+    <script src="js/script.js"></script>
+  </body>
+</html>
